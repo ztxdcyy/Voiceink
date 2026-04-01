@@ -1,0 +1,152 @@
+# VoiceInk Progress Log
+
+## Session 1 — 2026-04-01 15:00
+
+### Completed
+- [x] Project scaffolding: Package.swift, main.swift, Info.plist, Makefile
+- [x] App/AppDelegate.swift — NSApplication entry point
+- [x] App/MenuBarManager.swift — status bar icon + menu (language, settings, quit)
+- [x] App/PermissionManager.swift — Accessibility + Microphone permission check & prompt
+- [x] Settings/SettingsStore.swift — UserDefaults with property wrappers
+- [x] Settings/SettingsWindowController.swift — API Key + Model + Test/Save
+- [x] HotKey/FnKeyMonitor.swift — CGEvent tap for Fn press/release + suppression
+- [x] Audio/AudioFormat.swift — 16kHz/16-bit/mono PCM constants
+- [x] Audio/AudioEngine.swift — AVAudioEngine recording + RMS + Base64 PCM output
+- [x] WebSocket/RealtimeModels.swift — Client/Server event Codable models
+- [x] WebSocket/RealtimeProtocol.swift — Delegate protocol
+- [x] WebSocket/RealtimeAPIClient.swift — WebSocket connect/send/receive
+- [x] UI/WaveformView.swift — 5-bar waveform driven by RMS
+- [x] UI/TranscriptLabel.swift — elastic-width text display
+- [x] UI/CapsulePanel.swift — HUD floating window with animations
+- [x] TextInjection/InputSourceManager.swift — CJK detection + ASCII switch
+- [x] TextInjection/TextInjector.swift — clipboard + Cmd+V injection
+
+### In Progress
+- [ ] SessionCoordinator — the core orchestrator tying all modules together
+
+### Stuck / Issues
+- None yet. All individual modules written but NOT compiled yet.
+
+### Next Steps
+1. Write SessionCoordinator plan (cross-module, needs plan-first)
+2. Implement SessionCoordinator
+3. First compile attempt — fix all build errors
+4. Runtime testing and iteration
+
+## Session 2 — 2026-04-01 15:24
+
+### Completed
+- [x] Created `SessionCoordinator.plan.md` before implementation (plan-first)
+- [x] Added `SessionCoordinator.swift` and wired Fn → recording → commit/create → done → inject flow
+- [x] Extended realtime delegate with `realtimeClientDidFinishResponse` and handled `response.done`
+- [x] Fixed `AppDelegate` to use `MenuBarManager.shared` (avoid duplicate status item)
+- [x] Fixed SPM issue: removed Info.plist from resources and excluded file in target
+- [x] Clean build passed (`swift build`)
+- [x] Release app bundle build passed (`make build`)
+- [x] App launch command passed (`make run`)
+
+### In Progress
+- [ ] Manual runtime validation in real desktop environment (permissions + Fn interception + actual speech injection)
+
+### Stuck / Issues
+- No compile errors currently.
+- Real-world Fn suppression behavior still needs on-device validation (known macOS variability).
+
+### Next Steps
+1. End-to-end manual QA checklist execution (Accessibility/Microphone/API key)
+2. Verify Fn hold/release behavior and emoji picker suppression across apps
+3. Verify transcript injection with CJK input method switching
+4. Iterate based on runtime findings
+
+## Session 3 — 2026-04-01 15:35
+
+### Completed
+- [x] Added `QA_CHECKLIST.md` for step-by-step manual E2E validation
+- [x] Added `make qa` target in `Makefile`
+- [x] Verified `make qa` passes and validates app bundle artifacts
+
+### In Progress
+- [ ] Run the manual QA checklist on the developer desktop and capture findings
+
+### Next Steps
+1. Execute `QA_CHECKLIST.md` item by item in real apps
+2. Record failures and patch in small serial submodules
+
+## Session 4 — 2026-04-01 15:57
+
+### Completed
+- [x] Fixed Settings API key field visibility:
+  - replaced `NSTextField + NSSecureTextFieldCell` with `NSSecureTextField`
+  - explicitly enabled rounded bezel for clear visibility
+- [x] Fixed first-launch Accessibility guidance:
+  - `AXIsProcessTrustedWithOptions` now uses prompt = true
+  - alert now calls `NSApp.activate(ignoringOtherApps: true)` before `runModal()`
+- [x] Build verification passed (`swift build`)
+
+### Next Steps
+1. Re-run app and verify API key field is visible/editable
+2. Verify system Accessibility prompt appears on first run
+
+## Session 5 — 2026-04-01 16:03
+
+### Completed
+- [x] Replaced one-shot permission alert with persistent bilingual guide window
+- [x] Added icon in permission guide window
+- [x] Added explicit actions:
+  - Open System Settings
+  - Recheck permission
+  - Later
+- [x] Kept guide window open after opening settings (no immediate close)
+- [x] Added polling + manual recheck to auto close only after permission is granted
+- [x] Build and lints passed
+
+### Next Steps
+1. User validates UX: click Open Settings and verify window stays visible
+2. Verify bilingual guidance readability and status updates
+
+## Session 6 — 2026-04-01 16:12
+
+### Completed
+- [x] Added permission debug logger (`PermissionDebugLogger`)
+  - console output prefix: `[VoiceInk][Permission]`
+  - file output: `~/Library/Logs/VoiceInk/permission.log`
+- [x] Added detailed diagnostics in permission recheck flow:
+  - trustedWithOptions / trustedRaw
+  - bundle id / executable path
+- [x] Exposed log path in guide window failed hint for easier debugging
+- [x] Build + lints passed
+
+### Next Steps
+1. Reproduce user flow and inspect permission log file
+2. Identify whether mismatch is caused by toggle state, app identity/path, or delayed TCC refresh
+
+## Session 7 — 2026-04-01 16:18
+
+### Completed
+- [x] Permission guide UX changed to user-confirm finish flow
+  - no auto-close after recheck success
+  - button becomes "我已完成，开始使用"
+- [x] Added API configuration entry in permission guide window
+- [x] Added success toast fade-out after user clicks start
+- [x] Build + lints passed
+
+### Next Steps
+1. User validates new interaction flow in live app
+2. Continue with remaining runtime QA checklist
+
+## Session 8 — 2026-04-01 16:27
+
+### Completed
+- [x] Guide window converted to full Chinese UI (title, text, buttons, status)
+- [x] Added top-left emoji icon in guide content area
+- [x] Removed UI display of log path from failed hint
+- [x] Switched to two-step guide flow:
+  - Step 1: 辅助功能授权
+  - Step 2: API 配置
+- [x] Added API settings entry in step 2 and save-notification refresh
+- [x] Success toast converted to Chinese
+- [x] Build + lints passed
+
+### Next Steps
+1. User validates the two-step wizard interaction
+2. Continue end-to-end QA for recording/transcription/injection

@@ -1,0 +1,76 @@
+{
+  "features": [
+    {
+      "id": "F1",
+      "name": "Project Scaffolding",
+      "description": "Package.swift, main.swift, Info.plist, Makefile",
+      "status": "done"
+    },
+    {
+      "id": "F2",
+      "name": "Menu Bar App Shell",
+      "description": "AppDelegate + MenuBarManager + LSUIElement",
+      "status": "done"
+    },
+    {
+      "id": "F3",
+      "name": "Settings UI",
+      "description": "SettingsStore + SettingsWindowController (API Key, Model, Test, Save)",
+      "status": "done"
+    },
+    {
+      "id": "F4",
+      "name": "Permission Management",
+      "description": "Accessibility + Microphone permission detection and prompting",
+      "status": "done"
+    },
+    {
+      "id": "F5",
+      "name": "Fn Key Monitoring",
+      "description": "CGEvent tap global Fn key press/release with event suppression",
+      "status": "done"
+    },
+    {
+      "id": "F6",
+      "name": "Audio Recording Engine",
+      "description": "AVAudioEngine with 16kHz resampling, RMS calculation, Base64 PCM output",
+      "status": "done"
+    },
+    {
+      "id": "F7",
+      "name": "Realtime WebSocket API Client",
+      "description": "Qwen-Omni-Realtime WebSocket protocol: session.update, audio streaming, response events",
+      "status": "done"
+    },
+    {
+      "id": "F8",
+      "name": "Capsule Floating Window",
+      "description": "NSPanel HUD with WaveformView + TranscriptLabel + animations",
+      "status": "done"
+    },
+    {
+      "id": "F9",
+      "name": "Text Injection",
+      "description": "Clipboard + Cmd+V paste with CJK input source handling",
+      "status": "done"
+    },
+    {
+      "id": "F10",
+      "name": "Session Coordinator",
+      "description": "Core orchestrator: Fn → record → stream → transcribe → inject",
+      "status": "done"
+    },
+    {
+      "id": "F11",
+      "name": "Build & Compile",
+      "description": "First successful compilation with zero errors",
+      "status": "done"
+    },
+    {
+      "id": "F12",
+      "name": "Runtime Validation",
+      "description": "End-to-end test: Fn press → speak → release → text injected",
+      "status": "in-progress"
+    }
+  ]
+}
