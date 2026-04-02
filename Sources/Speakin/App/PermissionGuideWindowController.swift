@@ -22,6 +22,7 @@ final class PermissionGuideWindowController: NSWindowController {
 
     private var systemSettingsButton: NSButton?
     private var apiSettingsButton: NSButton?
+    private var applyForKeyButton: NSButton?
     private var primaryButton: NSButton?
 
     private(set) var step: GuideStep = .accessibility
@@ -97,10 +98,16 @@ final class PermissionGuideWindowController: NSWindowController {
         systemSettingsButton = openButton
 
         let apiButton = NSButton(title: "打开 API 配置", target: self, action: #selector(openAPISettingsTapped))
-        apiButton.frame = NSRect(x: padding, y: btnY, width: 170, height: 36)
+        apiButton.frame = NSRect(x: padding, y: btnY, width: 160, height: 36)
         apiButton.bezelStyle = .rounded
         contentView.addSubview(apiButton)
         apiSettingsButton = apiButton
+
+        let applyButton = NSButton(title: "申请 API Key →", target: self, action: #selector(openApplyForKeyURL))
+        applyButton.frame = NSRect(x: padding + 168, y: btnY, width: 148, height: 36)
+        applyButton.bezelStyle = .rounded
+        contentView.addSubview(applyButton)
+        applyForKeyButton = applyButton
 
         let doneButton = NSButton(title: "我已完成授权，重新检查", target: self, action: #selector(primaryTapped))
         doneButton.frame = NSRect(x: 380, y: btnY, width: 236, height: 36)
@@ -131,6 +138,7 @@ final class PermissionGuideWindowController: NSWindowController {
 
             systemSettingsButton?.isHidden = false
             apiSettingsButton?.isHidden = true
+            applyForKeyButton?.isHidden = true
             primaryButton?.title = "我已完成授权，重新检查"
             primaryButton?.isEnabled = true
 
@@ -146,6 +154,7 @@ final class PermissionGuideWindowController: NSWindowController {
 
             systemSettingsButton?.isHidden = true
             apiSettingsButton?.isHidden = true
+            applyForKeyButton?.isHidden = true
             primaryButton?.isHidden = true
 
         case .api:
@@ -163,6 +172,7 @@ final class PermissionGuideWindowController: NSWindowController {
 
             systemSettingsButton?.isHidden = true
             apiSettingsButton?.isHidden = false
+            applyForKeyButton?.isHidden = false
             primaryButton?.isHidden = false
             primaryButton?.title = "我已完成 API 配置，开始使用"
             primaryButton?.isEnabled = true
@@ -181,6 +191,7 @@ Speakin 已准备就绪。
 
             systemSettingsButton?.isHidden = true
             apiSettingsButton?.isHidden = true
+            applyForKeyButton?.isHidden = true
             primaryButton?.isHidden = false
             primaryButton?.title = "开始使用 Speakin"
             primaryButton?.isEnabled = true
@@ -252,6 +263,12 @@ Speakin 已准备就绪。
 
     @objc private func openAPISettingsTapped() {
         onOpenAPISettings?()
+    }
+
+    @objc private func openApplyForKeyURL() {
+        if let url = URL(string: "https://bailian.console.aliyun.com/cn-beijing?tab=model#/api-key") {
+            NSWorkspace.shared.open(url)
+        }
     }
 
     @objc private func primaryTapped() {
